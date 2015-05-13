@@ -33,6 +33,10 @@ WORKDIR /source
 ENTRYPOINT ["/tools/clean-launch.sh"]
 CMD ["tox"] 
 
-RUN echo "export LC_ALL=en_US.UTF-8" >> /etc/environment
-RUN echo "export LANG=en_US.UTF-8" >> /etc/environment
-RUN echo "export LANGUAGE=en_US.UTF-8" >> /etc/environment
+RUN locale-gen en_US.UTF-8 \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV PYTHONIOENCODING=utf8
