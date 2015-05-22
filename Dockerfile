@@ -36,9 +36,12 @@ RUN pip install tox
 ADD clean-launch.sh /tools/clean-launch.sh
 ADD build-coverage.sh /tools/build-coverage.sh
 
+ADD passwd.minimal /etc/passwd.ext
+RUN cat /etc/passwd.ext >> /etc/passwd
+USER me
+
 VOLUME /source
 WORKDIR /source
 
 ENTRYPOINT ["/tools/clean-launch.sh"]
 CMD ["tox"] 
-
