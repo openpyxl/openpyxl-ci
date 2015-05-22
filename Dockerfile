@@ -2,7 +2,16 @@ FROM ubuntu:14.04
 
 MAINTAINER Eric Gazoni <eric.gazoni@adimian.com>
 
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV PYTHONIOENCODING=utf8
+
 RUN apt-get update && apt-get upgrade -y
+
+RUN locale-gen en_US.UTF-8 \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
     software-properties-common \
@@ -21,11 +30,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
 
 ADD https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
 
-ADD clean-launch.sh /tools/clean-launch.sh
-
 RUN python /tmp/get-pip.py
-
 RUN pip install tox
+
+ADD clean-launch.sh /tools/clean-launch.sh
+ADD build-coverage.sh /tools/build-coverage.sh
 
 VOLUME /source
 WORKDIR /source
@@ -33,10 +42,3 @@ WORKDIR /source
 ENTRYPOINT ["/tools/clean-launch.sh"]
 CMD ["tox"] 
 
-RUN locale-gen en_US.UTF-8 \
-    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
-
-ENV LC_ALL=en_US.UTF-8
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US.UTF-8
-ENV PYTHONIOENCODING=utf8
