@@ -9,4 +9,4 @@ else
 fi
 
 echo "me:x:$USER_ID:$USER_GROUP:,,,:/tmp:/bin/bash" > passwd.minimal
-docker build -t $(basename $PWD) .
+docker build --no-cache -t $(basename $PWD) .
