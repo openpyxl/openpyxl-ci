@@ -16,7 +16,8 @@ RUN locale-gen en_US.UTF-8 \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
     software-properties-common \
     python-software-properties \
-    libjpeg-dev
+    libjpeg-dev \
+    g++
 
 RUN add-apt-repository -y ppa:fkrull/deadsnakes \
     && apt-get update
