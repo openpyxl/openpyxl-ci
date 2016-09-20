@@ -29,7 +29,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
     python3.2 python3.2-dev \
     python3.3 python3.3-dev \
     python3.4 python3.4-dev \
-    python3.5 python3.5-dev
+    python3.5 python3.5-dev \
+    python3.6 python3.6-dev
 
 ADD https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
 
