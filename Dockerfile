@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM ubuntu:latest
 
 MAINTAINER Eric Gazoni <eric.gazoni@adimian.com>
 
