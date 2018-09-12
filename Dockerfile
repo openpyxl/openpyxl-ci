@@ -1,4 +1,6 @@
-FROM ubuntu:latest
+FROM gentoo/portage:latest as portage
+FROM gentoo/stage3-amd64:latest
+COPY --from=portage /usr/portage /usr/portage
 
 MAINTAINER Eric Gazoni <eric.gazoni@adimian.com>
 
@@ -6,39 +8,22 @@ ENV LC_ALL=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV PYTHONIOENCODING=utf8
+ENV ACCEPT_KEYWORDS="~amd64"
 
-RUN apt-get update && apt-get upgrade -y
+RUN emerge -q --sync
+# RUN emerge -q --update @world
+RUN emerge -q dev-util/ccache
 
-RUN locale-gen en_US.UTF-8 \
-    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
-
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
-    software-properties-common \
-    python-software-properties \
-    libjpeg-dev \
-    g++
-
-RUN add-apt-repository -y ppa:fkrull/deadsnakes \
-    && apt-get update
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
-    libxml2-dev libxslt1-dev \
-    python2.6 python2.6-dev \
-    python2.7 python2.7-dev \
-    python3.2 python3.2-dev \
-    python3.3 python3.3-dev \
-    python3.4 python3.4-dev \
-    python3.5 python3.5-dev \
-    python3.6 python3.6-dev
-
-ADD https://bootstrap.pypa.io/get-pip.py /tmp/get-pip.py
-
-RUN python /tmp/get-pip.py
-RUN pip install tox
+RUN emerge -q dev-lang/python:2.7
+RUN emerge -q dev-lang/python:3.4
+RUN emerge -q dev-lang/python:3.5
+RUN emerge -q dev-lang/python:3.6
+RUN emerge -q dev-lang/python:3.7
+# RUN emerge -q dev-python/pypy
+# RUN emerge -q dev-python/pypy3
+RUN emerge -q dev-python/tox
 
 ADD clean-launch.sh /tools/clean-launch.sh
-ADD build-coverage.sh /tools/build-coverage.sh
 
 ADD passwd.minimal /etc/passwd.ext
 RUN cat /etc/passwd.ext >> /etc/passwd
@@ -48,4 +33,4 @@ VOLUME /source
 WORKDIR /source
 
 ENTRYPOINT ["/tools/clean-launch.sh"]
-CMD ["tox"] 
+CMD ["tox", "--skip-missing-interpreters"]
