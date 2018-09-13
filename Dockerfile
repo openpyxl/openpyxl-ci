@@ -23,6 +23,7 @@ RUN emerge -q dev-lang/python:3.7
 # RUN emerge -q dev-python/pypy3
 RUN emerge -q dev-python/tox
 RUN emerge -q dev-vcs/git
+RUN emerge -q dev-python/hglib
 
 ADD clean-launch.sh /tools/clean-launch.sh
 
