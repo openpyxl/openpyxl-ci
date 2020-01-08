@@ -14,13 +14,10 @@ RUN emerge -q --sync
 # RUN emerge -q --update @world
 RUN emerge -q dev-util/ccache
 
-RUN emerge -q dev-lang/python:2.7
-RUN emerge -q dev-lang/python:3.4
-RUN emerge -q dev-lang/python:3.5
-RUN emerge -q dev-lang/python:3.6
-RUN emerge -q dev-lang/python:3.7
-# RUN emerge -q dev-python/pypy
-# RUN emerge -q dev-python/pypy3
+RUN USE="sqlite" emerge -q dev-lang/python:3.6
+RUN USE="sqlite" emerge -q dev-lang/python:3.7
+RUN USE="sqlite" emerge -q dev-lang/python:3.8
+
 RUN emerge -q dev-python/tox
 RUN emerge -q dev-vcs/git
 RUN emerge -q dev-python/hglib
